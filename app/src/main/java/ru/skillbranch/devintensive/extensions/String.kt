@@ -3,15 +3,11 @@ package ru.skillbranch.devintensive.extensions
 import java.lang.StringBuilder
 
 fun String.truncate(charAmount: Int = 16): String {
-    if (this.length <= charAmount || charAmount <= 0) return this
+    val trimStr = this.trim()
+    if (trimStr.length <= charAmount || charAmount <= 0) return trimStr
 
-    return with(this.subSequence(0, charAmount)) {
-        val subSec = if (this.last().isWhitespace()) {
-            this.subSequence(0, this.length - 1)
-        } else {
-            this
-        }
-        "$subSec..."
+    return with(trimStr.subSequence(0, charAmount)) {
+          "${this.trim()}..."
     }
 }
 
