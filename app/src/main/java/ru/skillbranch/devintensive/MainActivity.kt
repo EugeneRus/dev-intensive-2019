@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
-        benderObj = makeBender(status, question)
+        val wrongAnswerCounter = savedInstanceState?.getInt("WRONG_ANSWER_COUNTER") ?: 0
+        benderObj = makeBender(status, question, wrongAnswerCounter)
 
         val text = benderObj.askQuestion()
         val (r, g, b) = benderObj.status.color
@@ -52,8 +53,10 @@ class MainActivity : AppCompatActivity() {
         showBenderPhrase(phrase, r, g, b)
     }
 
-    private fun makeBender(status: String, question: String): Bender =
-        Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
+    private fun makeBender(status: String, question: String, wrongAnswerCounter: Int): Bender =
+        Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question)).also {
+            it.wrongAnswerCounter = wrongAnswerCounter
+        }
 
     private fun showBenderPhrase(text: String, red: Int, green: Int, blue: Int) {
         tv_text.text = text
@@ -100,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putString("STATUS", benderObj.status.name)
         outState.putString("QUESTION", benderObj.question.name)
+        outState.putInt("WRONG_ANSWER_COUNTER", benderObj.wrongAnswerCounter)
         Log.w("M_MainActivity", "onSaveInstanceState ${benderObj.status.name} ${benderObj.question.name}")
 
     }
