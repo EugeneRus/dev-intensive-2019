@@ -22,7 +22,7 @@ object Utils {
 
     fun transliteration(payload: String, divider: String = " "): String =
         buildString {
-            payload.forEach { char ->
+            payload.trim().forEach { char ->
                 if (char.isWhitespace()) {
                     this.append(divider)
                     return@forEach
